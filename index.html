@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Birds App</title>   
+</head>
+
+<style>
+#box { 
+    width: 100%;
+    display:inline-block;
+}  
+#left {
+    width: 50%;
+    float: left;
+    padding: 4px;
+    background-color: aqua;
+}
+#right {
+    width: 50%;
+    margin-left: 50%;
+    padding: 4px;
+    background-color: #eee;    
+}
+
+img {
+  width: 95%;
+  max-width: 400px;
+  height: auto;
+}
+</style>
+
+<body>
+
+<div id="box">
+
+<div id="left">
+
+<h2>Current Location:</h2> 42.081483, -76.168993 
+<br><br>
+Today's Weather: <span id="weather"></span>
+<br><br>
+Today's Sunset: <span id="sunset"></span>
+
+<h2>Birds Observed: Past 30 days</h2>
+<button onclick = "getPosts(lat, lng, 5)"> 5 km</button> <button onclick = "getPosts(lat, lng, 10)"> 10 km</button> <button onclick = "getPosts(lat, lng, 25)"> 25 km</button> <button onclick = "getPosts(lat, lng, 50)"> 50 km</button>
+
+<h2>Birds Observed Around the World: Past 30 days</h2>
+<button onclick = "getPosts(-0.48321199478224, 36.65453013882261, 50)"> Kenya </button> <button onclick = "getPosts(43.706779463160814, -70.24183947559797, 5)"> Maine Audubon</button> <button onclick = "getPosts(42.477449511828475, -76.45332928426393, 5)"> Sapsucker Woods</button> <button onclick = "getPosts(-16.52508140688017, 145.37732955152077, 5)"> Australia</button>
+
+</div> 
+
+<div id="right"></div>
+
+</div>
+
+<!-- List of local birds observed in the past 30 days -->
+<div id="birdList"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>   
+<script src="script.js"></script>
+
+</body>
+</html>
