@@ -157,7 +157,7 @@
         return dataObj;
     } 
 
-    getPosts(lat,lng,5)
+    //getPosts(lat,lng,5)
 
     // Google Maps api
     const getAddress = async function() {
@@ -174,7 +174,7 @@
         //return address.data;
     }    
 
-    getAddress()  
+    //getAddress()  
 
     // Sunset api
     const getSunset = async function() {
@@ -197,7 +197,7 @@
         return sunset.data;
     }   
     
-    getSunset()
+   //getSunset()
 
     // Weather api    
     const getWeather = async function() {
@@ -213,12 +213,15 @@
         }  
         
         let weatherDiv = document.querySelector('#weather')
-        weatherDiv.innerHTML = weatherObj.weather[0].description       
+        weatherDiv.innerHTML = weatherObj.weather[0].description      
+        
+        let tempDiv = document.querySelector('#temp')
+        tempDiv.innerHTML = ` and ${weatherObj.main.temp}&#176;F`         
         
         return weatherObj;
     }    
 
-    getWeather();
+    //getWeather();
 
      // Get Wiki article and Photo api    
      const getWiki = async function(name) {
@@ -240,9 +243,13 @@
         //build img src
         let photoDiv = document.createElement('div')
         let photo = document.createElement('img')
+        let link = document.createElement('a')
+        link.href = "info.html?name="+name
+        link.innerText = "More Info >>"
         photo.src = wiki.data.thumbnail.source
         photoDiv.appendChild(photo);
-        rightDiv.appendChild(photoDiv);        
+        rightDiv.appendChild(photoDiv); 
+        rightDiv.appendChild(link);        
         
         return wikiObj;
     }    

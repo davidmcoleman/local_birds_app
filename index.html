@@ -18,7 +18,7 @@
 
 <h2>Current Location:</h2> 42.081483, -76.168993 
 <br><br>
-Today's Weather: <span id="weather"></span>
+Today's Weather: <span id="weather"></span> <span id="temp"></span>
 <br><br>
 Today's Sunset: <span id="sunset"></span>
 
@@ -39,6 +39,17 @@ Today's Sunset: <span id="sunset"></span>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>   
 <script src="script.js"></script>
+
+<script>
+
+window.addEventListener('load', (event) => {
+    getPosts(lat,lng,5)
+    getAddress() 
+    getWeather()
+    getSunset()
+});
+
+</script>
 
 </body>
 </html>
