@@ -9,9 +9,10 @@ function geoFindMe() {
       lat  = position.coords.latitude;
       lng = position.coords.longitude;
 
-      console.log(`${lat}, ${lng}`)
-
       getPosts(lat,lng,5)
+
+      //get address
+      reverseGeocoding(lat,lng)
   
       status.textContent = '';
       mapLink.href = `https://www.openstreetmap.org/#map=18/${lat}/${lng}`;

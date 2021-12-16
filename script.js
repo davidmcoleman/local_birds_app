@@ -258,28 +258,54 @@
     }   
     
 
+    // Geocode address to x,y
+    const getLocationFromAddress = async function(addressInput) {
+        //let address1 = '1425 Seymour Rd Vestal NY';
+        let addressInput2 = addressInput.split(' ').join('+');
+        const geocoded = await axios.get("https://api.geocod.io/v1.7/geocode?q="+addressInput2+"&api_key=a4e16b6dc414ccbae4691e46bc611b1b6949bab")
+        let address = geocoded.data.results[0].formatted_address
+        lat = geocoded.data.results[0].location.lat
+        lng = geocoded.data.results[0].location.lng
 
-        // Geocode address to x,y
-        const getLocationFromAddress = async function(addressInput) {
-            //let address1 = '1425 Seymour Rd Vestal NY';
-            let addressInput2 = addressInput.split(' ').join('+');
-            const geocoded = await axios.get("https://api.geocod.io/v1.7/geocode?q="+addressInput2+"&api_key=a4e16b6dc414ccbae4691e46bc611b1b6949bab")
-            let address = geocoded.data.results[0].formatted_address
-            lat = geocoded.data.results[0].location.lat
-            lng = geocoded.data.results[0].location.lng
-    
-            let geocodedObj        
-            
-            try {
-                geocodedObj = await Promise.resolve(geocoded.data);
-            } catch (err) {
-                console.log(err);
-            }  
-    
-            let addressDiv = document.querySelector('#address')
-            addressDiv.innerHTML = address   
-            
-            getPosts(lat,lng,5)
+        let geocodedObj        
+        
+        try {
+            geocodedObj = await Promise.resolve(geocoded.data);
+        } catch (err) {
+            console.log(err);
+        }  
 
-            return geocodedObj;
-        }   
+        let addressDiv = document.querySelector('#address')
+        addressDiv.innerHTML = address   
+
+        let mapLink = document.querySelector('#map-link');
+        // mapLink.textContent = '' 
+        mapLink.href = `https://www.openstreetmap.org/#map=18/${lat}/${lng}`;
+        mapLink.textContent = `${lat} °, ${lng} °`;    
+        console.log(mapLink.textContent)           
+        
+        getPosts(lat,lng,5)
+
+        return geocodedObj;
+    }     
+
+     // Reverse Geocode x,y to address
+     const reverseGeocoding = async function(lat, lng) {
+
+        const geocoded = await axios.get("https://api.geocod.io/v1.7/reverse?q="+lat+","+lng+"&api_key=a4e16b6dc414ccbae4691e46bc611b1b6949bab")
+        let address = geocoded.data.results[0].formatted_address
+
+        let geocodedObj        
+        
+        try {
+            geocodedObj = await Promise.resolve(geocoded.data);
+        } catch (err) {
+            console.log(err);
+        }  
+
+        //update address div
+        let addressDiv = document.querySelector('#address')
+        addressDiv.innerHTML = address   
+           
+        return geocodedObj;
+    }       
