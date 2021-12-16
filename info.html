@@ -4,27 +4,56 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>More Info</title>
+    <title>Local Birds App</title>   
 
     <link rel="stylesheet" href="style.css">
 
 </head>
+
 <body>
- <a href="index.html"><< Back</a>  
 
- <div id="box">
+<div id="box">
+    <div id="logout">Logout</div>
+<div id="left">
 
- <div id="right"></div>   
+<h2>Current Location:</h2> 42.081483, -76.168993 
+<br><br>
+<form>
+    <label for="street">Street Name:</label><br>
+    <input type="text" id="street" name="street" value="20 Gilsland Farm Rd, Falmouth, ME 04105"><br>
+    <input type="submit" value="Submit">
+</form>
+<br> 
+Today's Weather: <span id="weather"></span> <span id="temp"></span>
+<br><br>
+Today's Sunset: <span id="sunset"></span>
+
+<h4>Distance Preferences:</h4>
+<button onclick = "getPosts(lat, lng, 5)"> 5 km</button> <button onclick = "getPosts(lat, lng, 10)"> 10 km</button> <button onclick = "getPosts(lat, lng, 25)"> 25 km</button> <button onclick = "getPosts(lat, lng, 50)"> 50 km</button>
+
+<h4>Birds Observed Around the World: Past 30 days</h4>
+<button onclick = "getPosts(-0.48321199478224, 36.65453013882261, 50)"> Kenya </button> <button onclick = "getPosts(43.706779463160814, -70.24183947559797, 5)"> Maine Audubon</button> <button onclick = "getPosts(42.477449511828475, -76.45332928426393, 5)"> Sapsucker Woods</button> <button onclick = "getPosts(-16.52508140688017, 145.37732955152077, 5)"> Australia</button>
+
+</div> 
+
+<div id="right"></div>
 
 </div>
+
+<!-- List of local birds observed in the past 30 days -->
+<div id="birdList"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>   
 <script src="script.js"></script>
 
 <script>
-    window.addEventListener('load', (event) => {
-        getWiki('Eagle')
-    });
-</script> 
+window.addEventListener('load', (event) => {
+    getPosts(lat,lng,5)
+    getAddress() 
+    getWeather()
+    getSunset()
+});
+</script>
+
 </body>
 </html>

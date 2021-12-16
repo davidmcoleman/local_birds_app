@@ -20,3 +20,12 @@ img {
   max-width: 400px;
   height: auto;
 }
+
+.center {
+    margin: auto;
+    width: 50%;
+}
+
+h2 {
+    display: inline;
+}

@@ -1,4 +1,15 @@
+    //Waterman Hiking Trails
+    const lat = 42.081483; 
+    const lng = -76.168993;
+    const d = 5; 
 
+
+
+    // ********* Helper functions ******* //
+
+
+    
+    
     function objectLength(obj) {
         var count = 0;
     
@@ -131,11 +142,8 @@
         return       
     }
 
-    //Waterman Hiking Trails
-    const lat = 42.081483; 
-    const lng = -76.168993;
-    const d = 5; 
-  
+    // ********** APIs ********** //
+
     //Cornell's eBird api
     const getPosts = async function(lat,lng,d) {
         const post = await axios.get("https://api.ebird.org/v2/data/obs/geo/recent?lat="+lat+"&lng="+lng+"&dist="+d+"", {
@@ -243,13 +251,16 @@
         //build img src
         let photoDiv = document.createElement('div')
         let photo = document.createElement('img')
-        let link = document.createElement('a')
-        link.href = "info.html?name="+name
-        link.innerText = "More Info >>"
+        let title = document.createElement('h4')
+        title.innerText = wiki.data.title
+        let caption = document.createElement('p')
+        caption.innerText = wiki.data.extract
+        
         photo.src = wiki.data.thumbnail.source
         photoDiv.appendChild(photo);
         rightDiv.appendChild(photoDiv); 
-        rightDiv.appendChild(link);        
+        rightDiv.appendChild(title);  
+        rightDiv.appendChild(caption);        
         
         return wikiObj;
     }    
