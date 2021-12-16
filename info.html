@@ -20,27 +20,25 @@
 
 <div id="left">
 
-<button onclick = "geoFindMe()"> Get my location </button>
+<h1>Get location</h1>
 
-<h3>Your Current Location:</h3> <a id = "map-link" target="_blank"></a>
-<br><br>
+<p>1. Get location based on your current location <button onclick = "geoFindMe()"> >> Get my location </button></p>
 
-<label for="street">Street Name:</label><br>
-<input type="text" id="street" name="street" value="20 Gilsland Farm Rd, Falmouth, ME 04105"><br>
-<br>
-<button onclick = "geoFindMe()"> Get location </button>
-<br> 
-<br> 
-Today's Weather: <span id="weather"></span> <span id="temp"></span>
-<br><br>
-Today's Sunset: <span id="sunset"></span>
+<p>2. Or, enter an address to get a location: <input type="text" id="street" name="street" value="20 Gilsland Farm Rd, Falmouth, ME 04105">  <button onclick = "getLocationFromAddress(document.getElementById('street').value)"> >> Get location </button></p>
+
+<h3 id="mylocation">Your Current Location:</h3> <a id = "map-link" target="_blank"></a>
+
+<p id="address"></p>
+
+<p>Today's Weather: <span id="weather"></span> <span id="temp"></span></p>
+
+<p>Today's Sunset: <span id="sunset"></span></p>
 
 <h4>Distance Preferences:</h4>
 <button onclick = "getPosts(lat, lng, 5)"> 5 km</button> <button onclick = "getPosts(lat, lng, 10)"> 10 km</button> <button onclick = "getPosts(lat, lng, 25)"> 25 km</button> <button onclick = "getPosts(lat, lng, 50)"> 50 km</button>
 
 <h4>Birds Observed Around the World: Past 30 days</h4>
-<button onclick = "getPosts(-0.48321199478224, 36.65453013882261, 50)"> Kenya </button> <button onclick = "getPosts(43.706779463160814, -70.24183947559797, 5)"> Maine Audubon</button> <button onclick = "getPosts(42.477449511828475, -76.45332928426393, 5)"> Sapsucker Woods</button> <button onclick = "getPosts(-16.52508140688017, 145.37732955152077, 5)"> Australia</button>
-
+<p><button onclick = "getPosts(-0.48321199478224, 36.65453013882261, 50)"> Kenya </button> <button onclick = "getPosts(43.706779463160814, -70.24183947559797, 5)"> Maine Audubon</button> <button onclick = "getPosts(42.477449511828475, -76.45332928426393, 5)"> Sapsucker Woods</button> <button onclick = "getPosts(-16.52508140688017, 145.37732955152077, 5)"> Australia</button></p>
 
 <p id = "status"></p>
 
@@ -62,9 +60,9 @@ Today's Sunset: <span id="sunset"></span>
 <script>
 window.addEventListener('load', (event) => {
 
-    getAddress() 
-    getWeather()
-    getSunset()
+    // getAddress() 
+    // getWeather()
+   // getSunset()
 
 });
 </script>

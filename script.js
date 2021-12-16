@@ -167,29 +167,14 @@
         }
 
         makeList(dataObj)
+        getWeather()
+        getSunset()        
         //update time ago
         $("abbr.timeago").timeago();
         return dataObj;
     } 
 
     //getPosts(lat,lng,5)
-
-    // Google Maps api
-    const getAddress = async function() {
-        const address = await axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"&key=AIzaSyAS_3eMwLhspYaHZvOOqB9fbCjw4pvTgTY")
-        //console.log(address.data)
-
-        let addressObj
-
-        try {
-            addressObj = await Promise.resolve(address.data);
-        } catch (err) {
-            console.log(err);
-        }    
-        //return address.data;
-    }    
-
-    //getAddress()  
 
     // Sunset api
     const getSunset = async function() {
@@ -270,5 +255,31 @@
         rightDiv.appendChild(caption);        
         
         return wikiObj;
-    }    
+    }   
+    
 
+
+        // Geocode address to x,y
+        const getLocationFromAddress = async function(addressInput) {
+            //let address1 = '1425 Seymour Rd Vestal NY';
+            let addressInput2 = addressInput.split(' ').join('+');
+            const geocoded = await axios.get("https://api.geocod.io/v1.7/geocode?q="+addressInput2+"&api_key=a4e16b6dc414ccbae4691e46bc611b1b6949bab")
+            let address = geocoded.data.results[0].formatted_address
+            lat = geocoded.data.results[0].location.lat
+            lng = geocoded.data.results[0].location.lng
+    
+            let geocodedObj        
+            
+            try {
+                geocodedObj = await Promise.resolve(geocoded.data);
+            } catch (err) {
+                console.log(err);
+            }  
+    
+            let addressDiv = document.querySelector('#address')
+            addressDiv.innerHTML = address   
+            
+            getPosts(lat,lng,5)
+
+            return geocodedObj;
+        }   
