@@ -1,14 +1,9 @@
-    //Waterman Hiking Trails
-    const lat = 42.081483; 
-    const lng = -76.168993;
-    const d = 5; 
+    //Default location: Waterman Hiking Trails
+    let lat = 42.081483; 
+    let lng = -76.168993;
+    let d = 5; 
 
-
-
-    // ********* Helper functions ******* //
-
-
-    
+    // ********* Helper functions ******* // 
     
     function objectLength(obj) {
         var count = 0;
@@ -117,9 +112,20 @@
             anchor.href = "#";
             anchor.innerText = `${obj[i].comName}`
             birdItem.appendChild(anchor)
-            birdItem.appendChild(document.createTextNode(` - ${obj[i].locName} - ${obj[i].obsDt}`))
+            birdItem.appendChild(document.createTextNode(` - ${obj[i].locName} - `))      
+            let abbr = document.createElement("abbr")
+            abbr.className = 'timeago'
+            abbr.title = ` ${obj[i].obsDt}`
+            abbr.innerText = ` ${obj[i].obsDt}`
+            birdItem.appendChild(abbr)
+           // let string = '- <abbr class="timeago" title="2021-12-15 13:15">2021-12-15 13:15</abbr>' 
+           // birdItem.appendChild(document.createTextNode(string))    
+            //birdItem.appendChild(document.createTextNode(` - ${obj[i].locName} - ${obj[i].obsDt}`))
+            //birdItem.appendChild(document.createTextNode(` - <abbr class="timeago" title="${obj[i].obsDt}">'+rows[i].obsDt+'</abbr>`))   
+              console.log(birdItem)    
            
             birdList.appendChild(birdItem)
+      	
          }  
          
          function birdClick() {
@@ -161,7 +167,8 @@
         }
 
         makeList(dataObj)
-    
+        //update time ago
+        $("abbr.timeago").timeago();
         return dataObj;
     } 
 
