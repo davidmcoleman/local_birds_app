@@ -9,7 +9,7 @@ function geoFindMe() {
       lat  = position.coords.latitude;
       lng = position.coords.longitude;
 
-      getPosts(lat,lng,5)
+      getBirdList(lat,lng,5)
 
       //get address
       reverseGeocoding(lat,lng)

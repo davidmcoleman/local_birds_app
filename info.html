@@ -9,14 +9,13 @@
     <script src="https://www.smalltown360.com/app/app_interface/js/timeago/jquery.timeago.js" type="text/javascript"></script>
 	<script src="https://www.smalltown360.com/app/app_interface/js/timeago/timeago_helpers.js" type="text/javascript"></script>   
     <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
 <div id="box">
 
-    <div id="logout"><a href="index.html">Logout</a></div>
+<div id="logout"><a href="index.html">Logout</a></div>
 
 <div id="left">
 
@@ -24,21 +23,26 @@
 
 <p>1. Get location based on your current location <button onclick = "geoFindMe()"> >> Get my location </button></p>
 
-<p>2. Or, enter an address to get a location: <input type="text" id="street" name="street" value="20 Gilsland Farm Rd, Falmouth, ME 04105">  <button onclick = "getLocationFromAddress(document.getElementById('street').value)"> >> Get location </button></p>
+<p>2. Or, enter an address to get a location: <input type="text" id="street" name="street" value="4601 Campbell Airstrip Rd, Anchorage, AK 99507">  <button onclick = "getLocationFromAddress(document.getElementById('street').value)"> >> Get location </button></p>
+
+<p>Sample address: <i>1600 Pennsylvania Avenue NW, Washington, DC 20500</i></p>
+
+<div id="location_box">
 
 <h3 id="mylocation">Your Current Location:</h3> <a id = "map-link" target="_blank"></a>
 
-<p id="address"></p>
+<p>Today's Weather at <span id="address"></span> is <span id="weather" class="bold_text"></span> <span id="temp" class="bold_text"></span>.</p>
 
-<p>Today's Weather: <span id="weather"></span> <span id="temp"></span></p>
-
-<p>Today's Sunset: <span id="sunset"></span></p>
+<p>Today's Sunset: <span id="sunset" class="bold_text"></span></p>
 
 <h4>Distance Preferences:</h4>
-<button onclick = "getPosts(lat, lng, 5)"> 5 km</button> <button onclick = "getPosts(lat, lng, 10)"> 10 km</button> <button onclick = "getPosts(lat, lng, 25)"> 25 km</button> <button onclick = "getPosts(lat, lng, 50)"> 50 km</button>
+<button onclick = "getBirdList(lat, lng, 5)"> 5 km</button> <button onclick = "getBirdList(lat, lng, 10)"> 10 km</button> <button onclick = "getBirdList(lat, lng, 25)"> 25 km</button> <button onclick = "getBirdList(lat, lng, 50)"> 50 km</button>
 
 <h4>Birds Observed Around the World: Past 30 days</h4>
-<p><button onclick = "getPosts(-0.48321199478224, 36.65453013882261, 50)"> Kenya </button> <button onclick = "getPosts(43.706779463160814, -70.24183947559797, 5)"> Maine Audubon</button> <button onclick = "getPosts(42.477449511828475, -76.45332928426393, 5)"> Sapsucker Woods</button> <button onclick = "getPosts(-16.52508140688017, 145.37732955152077, 5)"> Australia</button></p>
+
+<div id="aroundTheWorldDiv"></div>
+
+</div>
 
 <p id = "status"></p>
 
@@ -51,21 +55,9 @@
 
 </div>
 
-
-
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>   
 <script src="script.js"></script>
 <script src="geolocation.js"></script>
-
-<script>
-window.addEventListener('load', (event) => {
-
-    // getAddress() 
-    // getWeather()
-   // getSunset()
-
-});
-</script>
 
 </body>
 </html>

@@ -16,17 +16,6 @@
         return count;
     }
 
-    function lastBird(obj) {
-        let obsDate = formatDate(obj[0].obsDt)
-        return `A ${obj[0].comName} bird was spotted near ${obj[0].locName} on ${obsDate}!`
-    }
-
-    function getAddressName(obj) {
-
-        let addressName = obj.results[0].address_components[0].long_name;
-        return addressName
-    }   
-
     function formatDate (timestamp) {
 
         let date = new Date(timestamp)
@@ -52,13 +41,12 @@
 
         sunset = today + ' ' + sunset
 
-        //let sunset = 'Nov 22/2021 9:39:38 PM';
-
         //Eastern Standard Time must subtract 5 hours from UTC
         const utc_sunset = new Date(sunset) // create a date object from api feed based on utc time
 
         // create a date of Jun 15/2011, 8:32:00am
         // Nov 22/2021 9:39:38 PM
+    
         utc_sunset.setHours( utc_sunset.getHours() - 5 );
 
         //start help: https://stackoverflow.com/questions/14638018/current-time-formatting-with-javascript
@@ -81,14 +69,12 @@
     function getDescription(obj) {
 
         let description = obj.weather[0].description;
-        //console.log(description)
         return description
     }
 
     function getTemp(obj) {
 
         let temp = obj.main.temp;
-        //console.log(temp)
         return temp
     }  
 
@@ -118,40 +104,75 @@
             abbr.title = ` ${obj[i].obsDt}`
             abbr.innerText = ` ${obj[i].obsDt}`
             birdItem.appendChild(abbr)
-           // let string = '- <abbr class="timeago" title="2021-12-15 13:15">2021-12-15 13:15</abbr>' 
-           // birdItem.appendChild(document.createTextNode(string))    
-            //birdItem.appendChild(document.createTextNode(` - ${obj[i].locName} - ${obj[i].obsDt}`))
-            //birdItem.appendChild(document.createTextNode(` - <abbr class="timeago" title="${obj[i].obsDt}">'+rows[i].obsDt+'</abbr>`))   
-              console.log(birdItem)    
-           
+         
             birdList.appendChild(birdItem)
+
+            //show location box
+            let location_box = document.querySelector('#location_box')
+            location_box.style.display = "block"
       	
          }  
          
+         birdListDiv.appendChild(birdList);
+         
          function birdClick() {
-             //alert(this.dataset.name)
             // get name of bird when li element is clicked
              let name = this.dataset.name
              console.log(name)
              getWiki(name)
          }
 
-         birdListDiv.appendChild(birdList);
-
          // assign event listern to li
          let birds = document.getElementsByClassName("bird");
          for (let i = 0; i < birds.length; i++) {
             birds[i].addEventListener("click", birdClick);
           }
-         //console.log(birds)
 
         return       
+    }
+
+    //Birds from around the world
+    let birdLocations = [
+            {"location": "Kenya", "lat": -0.48321199478224, "lng": 36.65453013882261,"d": 50},
+            {"location": "Maine Audubon", "lat": 43.706779463160814, "lng": -70.24183947559797,"d": 5},
+            {"location": "Sapsucker Woods", "lat": 42.477449511828475, "lng": -76.45332928426393,"d": 5},
+            {"location": "Australia", "lat": -16.52508140688017, "lng": 145.37732955152077,"d": 5}
+    ]
+
+
+    let aroundTheWorldDiv = document.querySelector('#aroundTheWorldDiv')
+    aroundTheWorldDiv.innerText = ""
+
+    for (let i = 0; i < birdLocations.length; i++) {
+        //dynamically build buttons
+        let locationBtn = document.createElement("button")   
+        locationBtn.id = i 
+        locationBtn.innerHTML = birdLocations[i].location
+        locationBtn.dataset.lat = birdLocations[i].lat
+        locationBtn.dataset.lng = birdLocations[i].lng
+        locationBtn.className = 'buttons'
+        console.log(`${birdLocations[i].location}`) 
+
+        aroundTheWorldDiv.appendChild(locationBtn)
+    }
+
+    function locationClick(){
+            // get name of bird when li element is clicked
+            let lat = this.dataset.lat
+            let lng = this.dataset.lng
+            getBirdList(lat,lng,5)
+            //console.log(`${lat}, ${lng}`)
+    }
+    //assign event listern to li
+    let locationBtnArr = document.getElementsByClassName("buttons");
+    for (let i = 0; i < locationBtnArr.length; i++) {
+        locationBtnArr[i].addEventListener("click", locationClick);
     }
 
     // ********** APIs ********** //
 
     //Cornell's eBird api
-    const getPosts = async function(lat,lng,d) {
+    const getBirdList = async function(lat,lng,d) {
         const post = await axios.get("https://api.ebird.org/v2/data/obs/geo/recent?lat="+lat+"&lng="+lng+"&dist="+d+"", {
            headers: {
             'X-eBirdApiToken': 'hqp2uto046pe'
@@ -168,13 +189,14 @@
 
         makeList(dataObj)
         getWeather()
-        getSunset()        
+        // getSunset() // this api does not correct utm time
+        getGmtOffset(lat, lng)        
         //update time ago
         $("abbr.timeago").timeago();
         return dataObj;
     } 
 
-    //getPosts(lat,lng,5)
+    //getBirdList(lat,lng,5)
 
     // Sunset api
     const getSunset = async function() {
@@ -190,7 +212,6 @@
             console.log(err);
         }  
 
-        //console.log(getSunsetTime(sunsetObj))
         let sunSetDiv = document.querySelector('#sunset')
         sunSetDiv.innerHTML = getSunsetTime(sunset.data);          
 
@@ -198,6 +219,42 @@
     }   
     
    //getSunset()
+
+     // Get Greenwich Mean Time offset
+     const getGmtOffset = async function(lat, lng) {
+        const gmt_offset = await axios.get("http://api.geonames.org/timezoneJSON?lat="+lat+"&lng="+lng+"&username=davidmcoleman")
+
+        let gmtOffsetObj        
+        
+        try {
+            gmtOffsetObj = await Promise.resolve(gmt_offset.data);
+        } catch (err) {
+            console.log(err);
+        }  
+
+        const utc_sunset = new Date(gmt_offset.data.sunset) 
+
+        var hr = utc_sunset.getHours();
+        var min = utc_sunset.getMinutes();
+        if (min < 10) {
+            min = "0" + min;
+        }
+        var ampm = "AM";
+        if( hr > 12 ) {
+            hr -= 12;
+            ampm = "PM";
+        }
+
+        //format the time to look like this 8:32:00 AM
+        const newsunset = `${hr}:${min} ${ampm}`
+
+         let sunSetDiv = document.querySelector('#sunset')
+         sunSetDiv.innerHTML = newsunset;             
+
+        return gmt_offset.data.gmtOffset;
+    }   
+    
+ //getGmtOffset(lat, lng)  
 
     // Weather api    
     const getWeather = async function() {
@@ -284,7 +341,7 @@
         mapLink.textContent = `${lat} °, ${lng} °`;    
         console.log(mapLink.textContent)           
         
-        getPosts(lat,lng,5)
+        getBirdList(lat,lng,5)
 
         return geocodedObj;
     }     

@@ -30,3 +30,19 @@ h3 {
     display: inline;
 }
 
+#address {
+    display: inline;
+}
+
+#location_box {
+    display: none;
+}
+
+.bold_text {
+    font-weight: bold;
+}
+
+.buttons {
+    padding: 4px;
+}
+
