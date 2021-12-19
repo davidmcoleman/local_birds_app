@@ -139,7 +139,6 @@
             {"location": "Australia", "lat": -16.52508140688017, "lng": 145.37732955152077,"d": 5}
     ]
 
-
     let aroundTheWorldDiv = document.querySelector('#aroundTheWorldDiv')
     aroundTheWorldDiv.innerText = ""
 
@@ -157,16 +156,50 @@
     }
 
     function locationClick(){
-            // get name of bird when li element is clicked
-            let lat = this.dataset.lat
-            let lng = this.dataset.lng
+            // show list of birds at specific location
+            lat = this.dataset.lat
+            lng = this.dataset.lng
             getBirdList(lat,lng,5)
             //console.log(`${lat}, ${lng}`)
     }
-    //assign event listern to li
+    //assign event listern to location buttons
     let locationBtnArr = document.getElementsByClassName("buttons");
     for (let i = 0; i < locationBtnArr.length; i++) {
         locationBtnArr[i].addEventListener("click", locationClick);
+    }
+
+    //Distance preference
+    let distancePref = [
+            {"distance": 5, "label": "5 km"},
+            {"distance": 10, "label": "10 km"},
+            {"distance": 25, "label": "25 km"},
+            {"distance": 50, "label": "50 km"}
+    ]
+
+    let distanceDiv = document.querySelector('#distanceDiv')
+    distanceDiv.innerText = ""   
+
+    for (let i = 0; i < distancePref.length; i++) {
+        //dynamically build buttons
+        let distanceBtn = document.createElement("button")  
+        distanceBtn.dataset.distance = distancePref[i].distance 
+        distanceBtn.innerHTML = distancePref[i].label
+        distanceBtn.className = 'distance_buttons'
+
+        distanceDiv.appendChild(distanceBtn)
+    }
+
+    function distanceClick(){
+        // distance pref
+        let d = this.dataset.distance
+        getBirdList(lat, lng, d)
+        console.log(`${lat}, ${lng}, ${d}`)
+    } 
+
+    //assign event listern to distance buttons
+    let distanceBtnArr = document.getElementsByClassName("distance_buttons");
+    for (let i = 0; i < distanceBtnArr.length; i++) {
+        distanceBtnArr[i].addEventListener("click", distanceClick);
     }
 
     // ********** APIs ********** //
