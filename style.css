@@ -26,12 +26,13 @@ img {
     width: 50%;
 }
 
-h3 {
+h1 {
     display: inline;
 }
 
 #address {
     display: inline;
+    text-decoration: underline;
 }
 
 #location_box {
@@ -47,6 +48,10 @@ abbr {
 }
 
 .buttons {
-    padding: 4px;
+    margin-right: 3px;
+}
+
+.distance_buttons {
+    margin-right: 3px;
 }
 

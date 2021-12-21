@@ -43,9 +43,6 @@
 
         //Eastern Standard Time must subtract 5 hours from UTC
         const utc_sunset = new Date(sunset) // create a date object from api feed based on utc time
-
-        // create a date of Jun 15/2011, 8:32:00am
-        // Nov 22/2021 9:39:38 PM
     
         utc_sunset.setHours( utc_sunset.getHours() - 5 );
 
@@ -61,22 +58,11 @@
             ampm = "PM";
         }
         //end help
+        
         //format the time to look like this 8:32:00 AM
         const newsunset = `${hr}:${min} ${ampm}`
         return newsunset
     } 
-
-    function getDescription(obj) {
-
-        let description = obj.weather[0].description;
-        return description
-    }
-
-    function getTemp(obj) {
-
-        let temp = obj.main.temp;
-        return temp
-    }  
 
     function makeList(obj) {
 
@@ -131,11 +117,11 @@
         return       
     }
 
-    //Birds from around the world
+    //Birds from around the world buttons
     let birdLocations = [
             {"location": "Kenya", "lat": -0.48321199478224, "lng": 36.65453013882261,"d": 50},
-            {"location": "Maine Audubon", "lat": 43.706779463160814, "lng": -70.24183947559797,"d": 5},
-            {"location": "Sapsucker Woods", "lat": 42.477449511828475, "lng": -76.45332928426393,"d": 5},
+            {"location": "Brazil", "lat": -3.058715405057551, "lng": -59.99216767752357,"d": 5}, 
+            {"location": "New Zeland", "lat": -43.404119473580785, "lng": 172.42776823731404,"d": 5}, 
             {"location": "Australia", "lat": -16.52508140688017, "lng": 145.37732955152077,"d": 5}
     ]
 
@@ -150,7 +136,7 @@
         locationBtn.dataset.lat = birdLocations[i].lat
         locationBtn.dataset.lng = birdLocations[i].lng
         locationBtn.className = 'buttons'
-        console.log(`${birdLocations[i].location}`) 
+        // console.log(`${birdLocations[i].location}`) 
 
         aroundTheWorldDiv.appendChild(locationBtn)
     }
@@ -160,7 +146,12 @@
             lat = this.dataset.lat
             lng = this.dataset.lng
             getBirdList(lat,lng,5)
-            //console.log(`${lat}, ${lng}`)
+            //get address.NOTE: api will not work for lat,lng outside US and CA
+            reverseGeocoding(lat,lng)
+            //update geo link
+            let mapLink = document.querySelector('#map-link');
+            mapLink.href = `https://www.openstreetmap.org/#map=18/${lat}/${lng}`;
+            mapLink.textContent = `${lat} °, ${lng} °`;
     }
     //assign event listern to location buttons
     let locationBtnArr = document.getElementsByClassName("buttons");
@@ -202,7 +193,20 @@
         distanceBtnArr[i].addEventListener("click", distanceClick);
     }
 
-    //source: https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API
+    //button to find users location
+    let geoFindMeBtn = document.querySelector('#geoFindMeBtn')
+    geoFindMeBtn.addEventListener('click', () => {
+        geoFindMe()
+    })
+
+    //button to submit user's address
+    let getLocationFromAddressBtn = document.querySelector('#getLocationFromAddressBtn')
+    let street = document.querySelector('#street').value
+    getLocationFromAddressBtn.addEventListener('click', () => {
+        getLocationFromAddress(this.street.value)
+    })  
+    
+    //geolocaton api source: https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API
 
     function geoFindMe() {
 
@@ -258,12 +262,10 @@
         getWeather()
         // getSunset() // this api does not correct utm time
         getGmtOffset(lat, lng)        
-        //update time ago
+        //update time ago: jquery plugin
         $("abbr.timeago").timeago();
         return dataObj;
     } 
-
-    //getBirdList(lat,lng,5)
 
     // Sunset api
     const getSunset = async function() {
@@ -284,8 +286,6 @@
 
         return sunset.data;
     }   
-    
-   //getSunset()
 
      // Get Greenwich Mean Time offset
      const getGmtOffset = async function(lat, lng) {
@@ -320,8 +320,6 @@
 
         return gmt_offset.data.gmtOffset;
     }   
-    
- //getGmtOffset(lat, lng)  
 
     // Weather api    
     const getWeather = async function() {
@@ -340,18 +338,14 @@
         weatherDiv.innerHTML = weatherObj.weather[0].description      
         
         let tempDiv = document.querySelector('#temp')
-        tempDiv.innerHTML = ` and ${weatherObj.main.temp}&#176;F`         
+        tempDiv.innerHTML = ` ${weatherObj.main.temp}&#176;F`         
         
         return weatherObj;
     }    
 
-    //getWeather();
-
      // Get Wiki article and Photo api    
      const getWiki = async function(name) {
         const wiki = await axios.get("https://en.wikipedia.org/api/rest_v1/page/summary/"+name)
-       //console.log(wiki.data.extract)
-       //console.log(wiki.data.thumbnail.source)
         
        let wikiObj 
 
@@ -381,10 +375,9 @@
         return wikiObj;
     }   
     
-
     // Geocode address to x,y
     const getLocationFromAddress = async function(addressInput) {
-        //let address1 = '1425 Seymour Rd Vestal NY';
+  
         let addressInput2 = addressInput.split(' ').join('+');
         const geocoded = await axios.get("https://api.geocod.io/v1.7/geocode?q="+addressInput2+"&api_key=a4e16b6dc414ccbae4691e46bc611b1b6949bab")
         let address = geocoded.data.results[0].formatted_address
@@ -403,10 +396,9 @@
         addressDiv.innerHTML = address   
 
         let mapLink = document.querySelector('#map-link');
-        // mapLink.textContent = '' 
+
         mapLink.href = `https://www.openstreetmap.org/#map=18/${lat}/${lng}`;
-        mapLink.textContent = `${lat} °, ${lng} °`;    
-        console.log(mapLink.textContent)           
+        mapLink.textContent = `${lat} °, ${lng} °`;             
         
         getBirdList(lat,lng,5)
 

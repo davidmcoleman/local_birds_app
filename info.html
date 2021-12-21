@@ -21,22 +21,24 @@
 
 <h1>Get location</h1>
 
-<p>1. Get location based on your current location <button onclick = "geoFindMe()"> >> Get my location </button></p>
+<p>1. Get your current location <button id="geoFindMeBtn"> >> Use my location </button></p>
 
-<p>2. Or, enter an address to get a location: <input type="text" id="street" name="street" value="4601 Campbell Airstrip Rd, Anchorage, AK 99507">  <button onclick = "getLocationFromAddress(document.getElementById('street').value)"> >> Get location </button></p>
+<p>2. Or, enter an address to get a location: <input type="text" id="street" name="street" value = "20 Gilsland Farm Rd, Falmouth, ME 04105" placeholder="Search an address ...">  <button id="getLocationFromAddressBtn"> >> Get location </button></p>
 
 <p>Sample address: <i>1600 Pennsylvania Avenue NW, Washington, DC 20500</i></p>
 
 <div id="location_box">
 
-<h3 id="mylocation">Your Current Location:</h3> <a id = "map-link" target="_blank"></a>
+<h4 id="mylocation">Your Current Location:</h4> 
 
-<p>Today's Weather at <span id="address"></span> is <span id="weather" class="bold_text"></span> <span id="temp" class="bold_text"></span>.</p>
+<p>Geolocation: <a id = "map-link" target="_blank"></a></p>
 
-<p>Today's Sunset: <span id="sunset" class="bold_text"></span></p>
+<p>Address: <span id="address"></span></p>
+                
+<p>Today's weather is <span id="weather" class="bold_text"></span> and <span id="temp" class="bold_text"></span>. Sunset is <span id="sunset" class="bold_text"></span></p>
 
 <h4>Distance Preferences:</h4>
-<!-- <button onclick = "getBirdList(lat, lng, 5)"> 5 km</button> <button onclick = "getBirdList(lat, lng, 10)"> 10 km</button> <button onclick = "getBirdList(lat, lng, 25)"> 25 km</button> <button onclick = "getBirdList(lat, lng, 50)"> 50 km</button> -->
+
 <div id="distanceDiv"></div>
 
 <h4>Birds Observed Around the World: Past 30 days</h4>
