@@ -122,7 +122,8 @@
             {"location": "Kenya", "lat": -0.48321199478224, "lng": 36.65453013882261,"d": 50},
             {"location": "Brazil", "lat": -3.058715405057551, "lng": -59.99216767752357,"d": 5}, 
             {"location": "New Zeland", "lat": -43.404119473580785, "lng": 172.42776823731404,"d": 5}, 
-            {"location": "Australia", "lat": -16.52508140688017, "lng": 145.37732955152077,"d": 5}
+            {"location": "Australia", "lat": -16.52508140688017, "lng": 145.37732955152077,"d": 5},
+            {"location": "Puerto Rico", "lat": 18.223640032508303, "lng": -66.51010737210515,"d": 5} 
     ]
 
     let aroundTheWorldDiv = document.querySelector('#aroundTheWorldDiv')
@@ -136,7 +137,6 @@
         locationBtn.dataset.lat = birdLocations[i].lat
         locationBtn.dataset.lng = birdLocations[i].lng
         locationBtn.className = 'buttons'
-        // console.log(`${birdLocations[i].location}`) 
 
         aroundTheWorldDiv.appendChild(locationBtn)
     }
@@ -155,7 +155,9 @@
     }
     //assign event listern to location buttons
     let locationBtnArr = document.getElementsByClassName("buttons");
+    
     for (let i = 0; i < locationBtnArr.length; i++) {
+        
         locationBtnArr[i].addEventListener("click", locationClick);
     }
 
