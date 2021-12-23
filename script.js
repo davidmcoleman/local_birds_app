@@ -251,37 +251,19 @@
             'X-eBirdApiToken': 'hqp2uto046pe'
             } 
         })
- 
-        let dataObj
 
-        try {
-            dataObj = await Promise.resolve(post.data);
-        } catch (err) {
-            console.log(err);
-        }
-
-        makeList(dataObj)
+        makeList(post.data)
         getWeather()
-        // getSunset() // this api does not correct utm time
+        // getSunset() // this api does not correct utm time, used getGmtOffset instead
         getGmtOffset(lat, lng)        
         //update time ago: jquery plugin
         $("abbr.timeago").timeago();
-        return dataObj;
+        return post.data;
     } 
 
     // Sunset api
     const getSunset = async function() {
         const sunset = await axios.get("https://api.sunrise-sunset.org/json?lat="+lat+"&lng="+lng+"")
-         
-        //console.log(sunset.data.results.sunset)
-
-        let sunsetObj        
-        
-        try {
-            sunsetObj = await Promise.resolve(sunset.data);
-        } catch (err) {
-            console.log(err);
-        }  
 
         let sunSetDiv = document.querySelector('#sunset')
         sunSetDiv.innerHTML = getSunsetTime(sunset.data);          
@@ -292,14 +274,6 @@
      // Get Greenwich Mean Time offset
      const getGmtOffset = async function(lat, lng) {
         const gmt_offset = await axios.get("http://api.geonames.org/timezoneJSON?lat="+lat+"&lng="+lng+"&username=davidmcoleman")
-
-        let gmtOffsetObj        
-        
-        try {
-            gmtOffsetObj = await Promise.resolve(gmt_offset.data);
-        } catch (err) {
-            console.log(err);
-        }  
 
         const utc_sunset = new Date(gmt_offset.data.sunset) 
 
@@ -326,36 +300,20 @@
     // Weather api    
     const getWeather = async function() {
         const weather = await axios.get("https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lng+"&units=imperial&appid=ef7613414ba41e2e421d36c8ad9646e2")
-        console.log(weather.data.weather[0].description)
-        
-        let weatherObj
-
-        try {
-            weatherObj = await Promise.resolve(weather.data);
-        } catch (err) {
-            console.log(err);
-        }  
+        console.log(weather.data.weather[0].description) 
         
         let weatherDiv = document.querySelector('#weather')
-        weatherDiv.innerHTML = weatherObj.weather[0].description      
+        weatherDiv.innerHTML = weather.data.weather[0].description      
         
         let tempDiv = document.querySelector('#temp')
-        tempDiv.innerHTML = ` ${weatherObj.main.temp}&#176;F`         
+        tempDiv.innerHTML = ` ${weather.data.main.temp}&#176;F`         
         
-        return weatherObj;
+        return weather.data.weather[0].description;
     }    
 
      // Get Wiki article and Photo api    
      const getWiki = async function(name) {
-        const wiki = await axios.get("https://en.wikipedia.org/api/rest_v1/page/summary/"+name)
-        
-       let wikiObj 
-
-       try {
-            wikiObj = await Promise.resolve(wiki.data);
-        } catch (err) {
-            console.log(err);
-        }         
+        const wiki = await axios.get("https://en.wikipedia.org/api/rest_v1/page/summary/"+name)       
 
         let rightDiv = document.querySelector("#right")
         //empty div
@@ -374,7 +332,7 @@
         rightDiv.appendChild(title);  
         rightDiv.appendChild(caption);        
         
-        return wikiObj;
+        return wiki;
     }   
     
     // Geocode address to x,y
@@ -386,14 +344,6 @@
         lat = geocoded.data.results[0].location.lat
         lng = geocoded.data.results[0].location.lng
 
-        let geocodedObj        
-        
-        try {
-            geocodedObj = await Promise.resolve(geocoded.data);
-        } catch (err) {
-            console.log(err);
-        }  
-
         let addressDiv = document.querySelector('#address')
         addressDiv.innerHTML = address   
 
@@ -404,7 +354,7 @@
         
         getBirdList(lat,lng,5)
 
-        return geocodedObj;
+        return geocoded;
     }     
 
      // Reverse Geocode x,y to address
@@ -413,17 +363,9 @@
         const geocoded = await axios.get("https://api.geocod.io/v1.7/reverse?q="+lat+","+lng+"&api_key=a4e16b6dc414ccbae4691e46bc611b1b6949bab")
         let address = geocoded.data.results[0].formatted_address
 
-        let geocodedObj        
-        
-        try {
-            geocodedObj = await Promise.resolve(geocoded.data);
-        } catch (err) {
-            console.log(err);
-        }  
-
         //update address div
         let addressDiv = document.querySelector('#address')
         addressDiv.innerHTML = address   
            
-        return geocodedObj;
+        return geocoded;
     }       
